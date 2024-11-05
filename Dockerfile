@@ -19,7 +19,7 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 USER nobody
 
 # Change MOODLE_XX_STABLE for new versions
-ENV MOODLE_URL=https://github.com/moodle/moodle/archive/MOODLE_405_STABLE.tar.gz \
+ENV MOODLE_URL=https://download.moodle.org/download.php/stable405/moodle-latest-405.tgz \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     SITE_URL=http://localhost \
