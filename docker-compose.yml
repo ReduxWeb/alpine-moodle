@@ -22,7 +22,7 @@ services:
     environment:
       LANG: ru_RU.UTF-8
       LANGUAGE: ru_RU:ru
-      SITE_URL: https://spo.kbadk.ru
+      SITE_URL: https://spo-tf.kbadk.ru
       DB_TYPE: pgsql
       DB_HOST: postgres
       DB_PORT: 5432
@@ -50,7 +50,7 @@ services:
       POST_CONFIGURE_COMMANDS: |
         echo 'This is a post-configure command'
     ports:
-      - 81:8080
+      - 85:8080
     volumes:
       - moodledata:/var/www/moodledata
       - moodlehtml:/var/www/html
