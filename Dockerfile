@@ -49,9 +49,9 @@ ENV MOODLE_URL=https://github.com/moodle/moodle/archive/MOODLE_405_STABLE.tar.gz
     MOODLE_MAIL_PREFIX=[moodle] \
     AUTO_UPDATE_MOODLE=true \
     DEBUG=false \
-    client_max_body_size=50M \
-    post_max_size=50M \
-    upload_max_filesize=50M \
+    client_max_body_size=100M \
+    post_max_size=100M \
+    upload_max_filesize=100M \
     max_input_vars=5000
 
 RUN curl --location $MOODLE_URL | tar xz --strip-components=1 -C /var/www/html/
