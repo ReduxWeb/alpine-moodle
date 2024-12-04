@@ -1,74 +1,46 @@
-version: '3.8'
-
-services:
-  redis:
-    image: redis:alpine
-    restart: unless-stopped
-    networks:
-      - moodle-network
-
-  postgres:
-    image: postgres:alpine
-    restart: unless-stopped
-    environment:
-      - POSTGRES_PASSWORD=u8HXKagCn0
-      - POSTGRES_USER=celadmin
-      - POSTGRES_DB=moodleDBXKagC
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    networks:
-      - moodle-network
-
-  moodle:
-    image: erseco/alpine-moodle
-    build: .
-    restart: unless-stopped
-    environment:
-      LANG: ru_RU.UTF-8
-      LANGUAGE: ru_RU:ru
-      SITE_URL: https://spo-tf.kbadk.ru
-      DB_TYPE: pgsql
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: moodleDBXKagC
-      DB_USER: celadmin
-      DB_PASS: u8HXKagCn0
-      DB_PREFIX: mdl_
-      REDIS_HOST: redis
-      REVERSEPROXY: false
-      SSLPROXY: true
-      MOODLE_EMAIL: webmaster@kbadk.ru
-      MOODLE_LANGUAGE: ru
-      MOODLE_SITENAME: KBADK
-      MOODLE_USERNAME: celadmin
-      MOODLE_PASSWORD: u8HXKagCn0%
-      SMTP_HOST: smtp.mail.ru
-      SMTP_PORT: 465
-      SMTP_USER: webmaster@kbadk.ru
-      SMTP_PASSWORD: u8HXKagCn0
-      SMTP_PROTOCOL: tls
-      MOODLE_MAIL_NOREPLY_ADDRESS: webmaster@kbadk.ru
-      MOODLE_MAIL_PREFIX: "[moodle]"
-      PRE_CONFIGURE_COMMANDS: |
-        echo 'This is a pre-configure command'
-      POST_CONFIGURE_COMMANDS: |
-        echo 'This is a post-configure command'
-    ports:
-      - 85:8080
-    volumes:
-      - moodledata:/var/www/moodledata
-      - moodlehtml:/var/www/html
-    depends_on:
-      - postgres
-      - redis
-    networks:
-      - moodle-network
-
-volumes:
-  postgres:
-  moodledata:
-  moodlehtml:
-
-networks:
-  moodle-network:
-    driver: bridge
+moodle:
+  image: erseco/alpine-moodle
+  build: .
+  restart: unless-stopped
+  environment:
+    LANG: ru_RU.UTF-8
+    LANGUAGE: ru_RU:ru
+    SITE_URL: https://spo-tf.kbadk.ru
+    DB_TYPE: pgsql
+    DB_HOST: postgres
+    DB_PORT: 5432
+    DB_NAME: moodleDBXKagC
+    DB_USER: celadmin
+    DB_PASS: u8HXKagCn0
+    DB_PREFIX: mdl_
+    REDIS_HOST: redis
+    REVERSEPROXY: false
+    SSLPROXY: true
+    MOODLE_EMAIL: webmaster@kbadk.ru
+    MOODLE_LANGUAGE: ru
+    MOODLE_SITENAME: KBADK
+    MOODLE_USERNAME: celadmin
+    MOODLE_PASSWORD: u8HXKagCn0%
+    SMTP_HOST: smtp.mail.ru
+    SMTP_PORT: 465
+    SMTP_USER: webmaster@kbadk.ru
+    SMTP_PASSWORD: u8HXKagCn0
+    SMTP_PROTOCOL: tls
+    MOODLE_MAIL_NOREPLY_ADDRESS: webmaster@kbadk.ru
+    MOODLE_MAIL_PREFIX: "[moodle]"
+    PRE_CONFIGURE_COMMANDS: |
+      echo 'This is a pre-configure command'
+    POST_CONFIGURE_COMMANDS: |
+      echo 'This is a post-configure command'
+  ports:
+    - 85:8080
+  volumes:
+    - moodledata:/var/www/moodledata
+    - moodlehtml:/var/www/html
+  depends_on:
+    - postgres
+    - redis
+  networks:
+    - moodle-network
+  command: >
+    /bin/sh -c "until pg_isready -h postgres -p 5432; do echo waiting for postgres; sleep 2; done; php-fpm"
